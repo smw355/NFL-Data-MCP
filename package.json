@@ -1,0 +1,26 @@
+{
+  "name": "nfl-data-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for NFL Player Performance Data",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsx src/index.ts",
+    "postinstall": "npm run build"
+  },
+  "bin": {
+    "nfl-data-mcp": "./build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "csv-parser": "^3.0.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
