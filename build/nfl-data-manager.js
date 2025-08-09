@@ -29,12 +29,13 @@ export class NFLDataManager {
             const data = await this.fetchPositionData(position, year);
             const player = data.find(p => p.name?.toLowerCase().includes(playerName.toLowerCase()) ||
                 p.player?.toLowerCase().includes(playerName.toLowerCase()) ||
-                p.Player?.toLowerCase().includes(playerName.toLowerCase()));
+                p.Player?.toLowerCase().includes(playerName.toLowerCase()) ||
+                p.PlayerName?.toLowerCase().includes(playerName.toLowerCase()));
             if (!player) {
                 return null;
             }
             return {
-                name: player.name || player.player || player.Player || 'Unknown',
+                name: player.name || player.player || player.Player || player.PlayerName || 'Unknown',
                 position,
                 stats: player
             };
@@ -84,11 +85,11 @@ export class NFLDataManager {
                 return bValue - aValue; // Descending order
             })
                 .slice(0, limit)
-                .map(player => ({
-                name: player.name || player.player || player.Player || 'Unknown',
+                .map((player, index) => ({
+                name: player.name || player.player || player.Player || player.PlayerName || 'Unknown',
                 position,
                 [metric]: player[metric],
-                rank: data.indexOf(player) + 1
+                rank: index + 1
             }));
             return sortedData;
         }
@@ -104,12 +105,12 @@ export class NFLDataManager {
                 try {
                     const data = await this.fetchPositionData(position, year);
                     const matchingPlayers = data.filter(player => {
-                        const playerName = (player.name || player.player || player.Player || '').toLowerCase();
+                        const playerName = (player.name || player.player || player.Player || player.PlayerName || '').toLowerCase();
                         return playerName.includes(namePattern.toLowerCase());
                     });
                     matchingPlayers.forEach(player => {
                         results.push({
-                            name: player.name || player.player || player.Player || 'Unknown',
+                            name: player.name || player.player || player.Player || player.PlayerName || 'Unknown',
                             position,
                             stats: player
                         });
